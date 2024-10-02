@@ -24,6 +24,6 @@ class SignInButton(Clerk):
     tag = "SignInButton"
 
 
-sign_in = SignIn.createe
+sign_in = SignIn.create
 signed_in = SignedIn.create
 sign_in_button = SignInButton.create
