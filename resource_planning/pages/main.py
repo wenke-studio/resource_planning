@@ -2,6 +2,13 @@ from rxconfig import config
 
 import reflex as rx
 
+from resource_planning.components.clerk import signed_in, user_button
+from resource_planning.components.clerk import (
+    clerk_provider,
+    signed_out,
+    sign_in_button,
+)
+
 
 class State(rx.State):
     """The app state."""
@@ -9,7 +16,7 @@ class State(rx.State):
     ...
 
 
-def index() -> rx.Component:
+def main() -> rx.Component:
     # Welcome Page (Index)
     return rx.container(
         rx.color_mode.button(position="top-right"),
@@ -30,4 +37,17 @@ def index() -> rx.Component:
             min_height="85vh",
         ),
         rx.logo(),
+    )
+
+
+def index() -> rx.Component:
+    return rx.box(
+        clerk_provider(
+            signed_out(
+                sign_in_button(),
+            ),
+            signed_in(
+                user_button(),
+            ),
+        )
     )
