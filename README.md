@@ -3,5 +3,7 @@
 ## Quick Start
 
 ```bash
-> CLERK_PUBLISHABLE_KEY={CLERK PUBLISHABLE KEY} reflex run
+# fill the var from .env.example file
+$ cp .env.example .env
+$ reflex run
 ```
