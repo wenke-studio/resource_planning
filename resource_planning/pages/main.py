@@ -37,7 +37,7 @@ def header(title: str):
         ),
         rx.box(
             clerk.signed_in(clerk.user_button()),
-            clerk.signed_out(clerk.sign_in_button()),
+            clerk.signed_out(clerk.sign_in_button(rx.button("Sign In"))),
         ),
         align_items="center",
         justify_content="space-between",
@@ -48,6 +48,15 @@ def header(title: str):
 def content(*children, **props):
     return rx.box(
         *children,
+        rx.box(
+            clerk.signed_in(
+                clerk.sign_out_button(
+                    # todo: debug only
+                    rx.button("Sign Out", variant="ghost"),
+                ),
+            ),
+            class_name="fixed bottom-8 right-8",
+        ),
         class_name="border border-blue-500 w-full",
         **props,
     )
