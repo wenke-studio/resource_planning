@@ -73,6 +73,8 @@ def index():
             sidebar(),
             content(
                 rx.text("content"),
+                rx.text(clerk.ClerkState.is_signed_in),
+                rx.text(clerk.ClerkState.user_id),
             ),
         ),
     )

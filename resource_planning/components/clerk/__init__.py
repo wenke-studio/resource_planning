@@ -1,5 +1,5 @@
 from .authentication import sign_in, sign_up, google_one_tap
-from .base import clerk_provider
+from .base import clerk_provider, ClerkState, clerk_session
 from .control import (
     authentication_with_redirection_callback,
     clerk_loaded,
@@ -29,10 +29,12 @@ from .unstyled import (
 from .user import user_button, user_profile
 
 __all__ = [
+    "ClerkState",
     "sign_in",
     "sign_up",
     "google_one_tap",
     "clerk_provider",
+    "clerk_session",
     "authentication_with_redirection_callback",
     "clerk_loaded",
     "clerk_loading",
