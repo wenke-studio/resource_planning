@@ -9,6 +9,10 @@ class ClerkLoaded(ClerkComponent):
     tag: str = "ClerkLoaded"
 
 
+class ClerkLoading(ClerkComponent):
+    tag: str = "ClerkLoading"
+
+
 class Protect(ClerkComponent):
     tag: str = "Protect"
 
@@ -47,6 +51,7 @@ class SignedOut(ClerkComponent):
 
 authentication_with_redirection_callback = AuthenticationWithRedirectionCallback.create
 clerk_loaded = ClerkLoaded.create
+clerk_loading = ClerkLoading.create
 protect = Protect.create
 multisession_app_support = MultisessionAppSupport.create
 redirect_to_sign_in = RedirectToSignIn.create
