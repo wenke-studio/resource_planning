@@ -1,10 +1,9 @@
 import reflex as rx
 from dotenv import load_dotenv
 
-from .pages.main import index
+from .pages import *  # noqa: F403
 
 
 load_dotenv("../.env")
 
 app = rx.App()
-app.add_page(index)
