@@ -6,15 +6,17 @@ from resource_planning.components import clerk, react_icons
 def providers(func):
     def wrapper(*args, **kwargs):
         return clerk.clerk_provider(
-            clerk.clerk_loading(
-                rx.center(
-                    rx.spinner(size="3"),
-                    class_name="w-full h-screen justify-center items-center",
-                )
-            ),
-            clerk.clerk_loaded(
-                func(*args, **kwargs),
-            ),
+            clerk.clerk_session(
+                clerk.clerk_loading(
+                    rx.center(
+                        rx.spinner(size="3"),
+                        class_name="w-full h-screen justify-center items-center",
+                    )
+                ),
+                clerk.clerk_loaded(
+                    func(*args, **kwargs),
+                ),
+            )
         )
 
     return wrapper
