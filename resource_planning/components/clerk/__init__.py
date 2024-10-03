@@ -3,6 +3,7 @@ from .base import clerk_provider
 from .control import (
     authentication_with_redirection_callback,
     clerk_loaded,
+    clerk_loading,
     protect,
     multisession_app_support,
     redirect_to_sign_in,
