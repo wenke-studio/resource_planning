@@ -1,6 +1,6 @@
 import reflex as rx
 
-from resource_planning.components import clerk
+from resource_planning.components import clerk, react_icons
 
 
 def providers(func):
@@ -31,7 +31,10 @@ def sidebar():
 
 def header(title: str):
     return rx.flex(
-        rx.heading(title),
+        rx.hstack(
+            react_icons.tbler_icons("TbHeartRateMonitor", class_name="text-3xl"),
+            rx.heading(title),
+        ),
         rx.box(
             clerk.signed_in(clerk.user_button()),
             clerk.signed_out(clerk.sign_in_button()),
