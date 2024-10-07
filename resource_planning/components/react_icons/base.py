@@ -1,5 +1,5 @@
-from reflex.utils.imports import ImportVar
 import reflex as rx
+from reflex.utils.imports import ImportVar
 
 
 class ReactIcons(rx.Component):
