@@ -94,8 +94,23 @@ def public_view():
     )
 
 
+def protected_page(func):
+    def wrapper(*args, **kwargs):
+        return rx.fragment(
+            clerk.signed_in(
+                func(*args, **kwargs),
+            ),
+            clerk.signed_out(
+                clerk.redirect_to_sign_in(),
+            ),
+        )
+
+    return wrapper
+
+
 @rx.page(route="/private")
 @providers
+@protected_page
 def private_view():
     return rx.box(
         header("Private View"),
