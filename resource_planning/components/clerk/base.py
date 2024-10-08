@@ -1,6 +1,10 @@
 import os
+from pathlib import Path
+from typing import Optional
 
 import reflex as rx
+
+BASE_DIR = Path(__file__).parent
 
 
 class ClerkComponent(rx.Component):
@@ -38,8 +42,8 @@ class ClerkState(rx.State):
         #     self.set_user(self.user)
 
 
-class ClerkSession(rx.Component):
-    tag: str = "ClerkSession"
+class ClerkSessionHandler(rx.Component):
+    tag: str = "ClerkSessionHandler"
 
     def add_imports(self) -> dict:
         return {
@@ -51,46 +55,29 @@ class ClerkSession(rx.Component):
 
     def add_custom_code(self) -> list[str]:
         clerk_state_name = ClerkState.get_full_name()
-
-        # todo: refactor me
-        return [
-            """
-function ClerkSession({ children }) {
-  const { getToken, isLoaded, isSignedIn } = useAuth()
-  const [ addEvents, connectErrors ] = useContext(EventLoopContext)
-
-  useEffect(() => {
-      if (isLoaded && !!addEvents) {
-        if (isSignedIn) {
-          getToken().then(token => {
-            addEvents([Event("%s.set_clerk_session", {token})])
-          })
-        } else {
-          addEvents([Event("%s.clear_clerk_session")])
-        }
-      }
-  }, [isSignedIn])      
-
-  return (
-      <>{children}</>
-  )
-}
-"""
-            % (clerk_state_name, clerk_state_name)
-        ]
+        with open(BASE_DIR / "custom_code" / "clerk_session_handler.js") as f:
+            custom_code = f.read() % (clerk_state_name, clerk_state_name)
+        return [custom_code]
 
 
 class ClerkProvider(ClerkComponent):
     tag: str = "ClerkProvider"
 
-    publishable_key: str = os.getenv("CLERK_PUBLISHABLE_KEY")
+    publishable_key: Optional[str] = None
 
-    # @classmethod
-    # def create(cls, *children, **props):
-    #     session = ClerkSession.create(*children)
-    #     provider = super().create(session, **props)
-    #     return rx.fragment(provider)
+    secret_key: Optional[str] = None
+
+    @classmethod
+    def create(cls, *children, **props) -> rx.Component:
+        props["publishable_key"] = os.getenv("CLERK_PUBLISHABLE_KEY")
+        assert props["publishable_key"] is not None, "`publishable_key` is required"
+
+        props["secret_key"] = os.getenv("CLERK_SECRET_KEY")
+        assert props["secret_key"] is not None, "`secret_key` is required"
+
+        session_handler = ClerkSessionHandler.create(*children)
+        provider = super().create(session_handler, **props)
+        return rx.fragment(provider)
 
 
 clerk_provider = ClerkProvider.create
-clerk_session = ClerkSession.create

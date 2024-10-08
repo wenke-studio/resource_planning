@@ -1,5 +1,5 @@
 from .authentication import google_one_tap, sign_in, sign_up
-from .base import ClerkState, clerk_provider, clerk_session
+from .base import ClerkState, clerk_provider
 from .control import (
     authentication_with_redirection_callback,
     clerk_loaded,
