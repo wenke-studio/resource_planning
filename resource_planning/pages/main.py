@@ -71,8 +71,10 @@ def index():
             sidebar(),
             content(
                 rx.text("content"),
-                rx.text(clerk.ClerkState.is_signed_in),
-                rx.text(clerk.ClerkState.user_id),
+                rx.text(clerk.ClerkState.user.id, class_name="text-sky-500"),
+                rx.text(clerk.ClerkState.user.name, class_name="text-green-500"),
+                rx.text(clerk.ClerkState.token, class_name="text-red-500"),
+                rx.text(clerk.ClerkState.user, class_name="border border-sky-500"),
             ),
         ),
     )

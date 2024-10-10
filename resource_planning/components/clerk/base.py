@@ -11,35 +11,31 @@ class ClerkComponent(rx.Component):
     library: str = "@clerk/clerk-react"
 
 
+class ClerkUser(rx.Base):
+    id: str = ""
+    name: Optional[str] = None
+    image: Optional[str] = None
+    email: Optional[str] = None
+
+
 class ClerkState(rx.State):
-    is_signed_in: bool = False
+    token: Optional[str] = None
+    user: Optional[ClerkUser] = None
 
-    user_id: str = ""
-
-    claims: str = ""
-
-    user: str = ""
-
-    def set_clerk_session(self, token: str):
-        self.is_signed_in = True
-        # todo: decode the jwt token than set user_id and claims
-        self.user_id = 1
-
-        # todo: trigger .fetch_user()
-        if self.user_id:
-            self.fetch_user()
+    def set_clerk_session(self, token: str, user: dict) -> None:
+        self.set_token(token)
+        self.set_user(
+            ClerkUser(
+                id=user["id"],
+                name=user["username"] or user["fullName"],
+                image=user["imageUrl"],
+                email=user["primaryEmailAddress"]["emailAddress"],
+            )
+        )
 
     def clear_clerk_session(self):
-        self.is_signed_in = False
-        # todo: needs to dosomething
-        pass
-
-    def fetch_user(self):
-        # todo: create clerk api than fill me
-        self.user = "test"
-        # if self.user_id:
-        #     self.user = clerk.api.get_user(self.user_id)
-        #     self.set_user(self.user)
+        self.set_token(None)
+        self.set_user(None)
 
 
 class ClerkSessionHandler(rx.Component):
@@ -47,7 +43,7 @@ class ClerkSessionHandler(rx.Component):
 
     def add_imports(self) -> dict:
         return {
-            "@clerk/clerk-react": ["useAuth"],
+            "@clerk/clerk-react": ["useAuth", "useUser"],
             "react": ["useContext", "useEffect"],
             "/utils/context": ["EventLoopContext"],
             "/utils/state": ["Event"],
