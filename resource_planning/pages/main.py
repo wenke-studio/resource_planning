@@ -1,75 +1,32 @@
+import time
+
 import reflex as rx
 
 from resource_planning.components import clerk, react_icons
+from resource_planning.layout import page
 
 
-def providers(func):
-    def wrapper(*args, **kwargs):
-        return clerk.clerk_provider(
-            clerk.clerk_loading(
-                rx.center(
-                    rx.spinner(size="3"),
-                    class_name="w-full h-screen justify-center items-center",
-                )
-            ),
-            clerk.clerk_loaded(
-                func(*args, **kwargs),
-            ),
-        )
+class MainState(rx.State):
+    def on_load(self):
+        print("main state on_load")
 
-    return wrapper
+    @rx.var
+    def last_touch_time(self) -> str:
+        # This is updated anytime the state is updated.
+        return time.strftime("%H:%M:%S")
 
 
-def sidebar():
-    return rx.vstack(
-        rx.link("Home", href="/"),
-        rx.link("public", href="/public"),
-        rx.link("private", href="/private"),
-        class_name="border border-red-500 w-52",
-    )
-
-
-def header(title: str):
-    return rx.flex(
-        rx.hstack(
-            react_icons.tbler_icons("TbHeartRateMonitor", class_name="text-3xl"),
-            rx.heading(title),
-        ),
-        rx.box(
-            clerk.signed_in(clerk.user_button()),
-            clerk.signed_out(clerk.sign_in_button(rx.button("Sign In"))),
-        ),
-        align_items="center",
-        justify_content="space-between",
-        class_name="h-16 p-8",
-    )
-
-
-def content(*children, **props):
-    return rx.box(
-        *children,
-        rx.box(
-            clerk.signed_in(
-                clerk.sign_out_button(
-                    # todo: debug only
-                    rx.button("Sign Out", variant="ghost"),
-                ),
-            ),
-            class_name="fixed bottom-8 right-8",
-        ),
-        class_name="border border-blue-500 w-full",
-        **props,
-    )
-
-
-@rx.page(route="/")
-@providers
+@page(
+    route="/",
+    title="main page",
+    description="main desc.",
+    meta=[{"name": "hello", "content": "world"}],
+    on_load=MainState.on_load,
+)
 def index():
     return rx.box(
-        header("Resource Planning"),
         rx.hstack(
-            sidebar(),
-            content(
+            rx.box(
                 rx.text("content"),
                 rx.text(clerk.ClerkState.user.id, class_name="text-sky-500"),
                 rx.text(clerk.ClerkState.user.name, class_name="text-green-500"),
@@ -80,14 +37,11 @@ def index():
     )
 
 
-@rx.page(route="/public")
-@providers
+@page(route="/public")
 def public_view():
     return rx.box(
-        header("Public View"),
         rx.hstack(
-            sidebar(),
-            content(
+            rx.box(
                 rx.text("content"),
             ),
         ),
@@ -108,15 +62,12 @@ def protected_page(func):
     return wrapper
 
 
-@rx.page(route="/private")
-@providers
+@page(route="/private")
 @protected_page
 def private_view():
     return rx.box(
-        header("Private View"),
         rx.hstack(
-            sidebar(),
-            content(
+            rx.box(
                 rx.text("content"),
             ),
         ),
