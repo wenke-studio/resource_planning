@@ -1,7 +1,10 @@
-from .main import index, private_view, public_view
+# from .main import index, private_view, public_view
+
+from .welcome import welcome
 
 __all__ = [
-    "index",
-    "public_view",
-    "private_view",
+    "welcome",
+    # "index",
+    # "public_view",
+    # "private_view",
 ]
