@@ -2,8 +2,8 @@ import time
 
 import reflex as rx
 
-from resource_planning.components import clerk, react_icons
-from resource_planning.layout import page
+from resource_planning.components import clerk
+from resource_planning.layouts.default import page
 
 
 class MainState(rx.State):
