@@ -5,4 +5,12 @@ from .pages import *  # noqa: F403
 
 load_dotenv("../.env")
 
-app = rx.App()
+style = {
+    ".debug": {
+        "border": "3px solid red",
+    }
+}
+
+app = rx.App(
+    style=style,
+)
