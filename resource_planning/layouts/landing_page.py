@@ -2,7 +2,7 @@ from typing import Callable
 
 import reflex as rx
 
-from resource_planning.components import react_icons
+from resource_planning.components import clerk, react_icons
 from resource_planning.ui import logo
 
 
@@ -19,13 +19,15 @@ def header() -> rx.Component:
 
 def landing_page(content: rx.Component) -> Callable:
     def wrapper(*args, **kwargs) -> rx.Component:
-        return rx.center(
-            header(),
-            rx.box(
-                content(*args, **kwargs),
-                class_name="w-full h-full",
-            ),
-            class_name="w-full min-h-screen pt-16",
+        return clerk.clerk_provider(
+            rx.center(
+                header(),
+                rx.box(
+                    content(*args, **kwargs),
+                    class_name="w-full h-full",
+                ),
+                class_name="w-full min-h-screen pt-16",
+            )
         )
 
     return wrapper
