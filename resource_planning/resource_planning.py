@@ -1,6 +1,7 @@
 import reflex as rx
 from dotenv import load_dotenv
 
+from .models import *  # noqa: F403
 from .pages import *  # noqa: F403
 
 load_dotenv("../.env")
